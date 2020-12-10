@@ -1,25 +1,11 @@
 package org.example;
 
-import antlr.ASdebug.IASDebugStream;
-import lombok.extern.slf4j.Slf4j;
-import org.example.dao.*;
-import org.example.dao.entity.PlayersEntity;
-import org.example.dao.entity.TeamsEntity;
-import org.example.exception.UnknownPlayersException;
 
-import org.example.model.Players;
-import org.example.model.Teams;
-import org.example.service.PlayersService;
-import org.example.service.TeamsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 
-import java.security.Timestamp;
-import java.sql.SQLOutput;
-import java.util.Date;
 
 /**
  * RUN Config Enviroment Variables

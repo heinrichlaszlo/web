@@ -8,7 +8,7 @@ import org.example.model.Players;
 import org.springframework.stereotype.Service;
 
 
-import java.sql.Timestamp;
+
 import java.util.Collection;
 
 
@@ -30,7 +30,7 @@ public class PlayersDaoImpl implements PlayersDao{
     public void createPlayers(Players players) {
         PlayersEntity playersEntity;
 
-        //playerExist(players.getId());
+
 
         playersEntity = PlayersEntity.builder()
                 .id(players.getId())
@@ -48,15 +48,7 @@ public class PlayersDaoImpl implements PlayersDao{
             log.error(e.getMessage());
         }
     }
-      /*  protected void playerExist(int id) throws UnknownPlayersException{
-            Optional<PlayersEntity> playersEntity = playersRepository.findById(id);
 
-            if (playersEntity.isPresent()){
-                throw new UnknownPlayersException(String.format("Found id: ",id));
-            }
-
-        }
-*/
 
 
     @Override
