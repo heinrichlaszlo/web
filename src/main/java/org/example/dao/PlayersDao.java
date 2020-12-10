@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface PlayersDao {
 
-    void createPlayers(Players players);
+    void createPlayers(Players players) throws UnknownPlayersException;
     Collection<Players> readAll();
     void updatePlayers(Players players) throws UnknownPlayersException;
     void deletePlayers(int id) throws UnknownPlayersException;

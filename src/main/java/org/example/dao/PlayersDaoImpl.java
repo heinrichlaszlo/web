@@ -27,7 +27,7 @@ public class PlayersDaoImpl implements PlayersDao{
 
 
     @Override
-    public void createPlayers(Players players) {
+    public void createPlayers(Players players) throws UnknownPlayersException {
         PlayersEntity playersEntity;
 
 
@@ -40,6 +40,15 @@ public class PlayersDaoImpl implements PlayersDao{
                 .height(players.getHeight())
                 .weight(players.getWeight())
                 .build();
+        if (playersEntity.getHeight() < 0){
+            throw new UnknownPlayersException(String.format("height <0 ",players));
+        }
+        if (playersEntity.getWeight() < 0){
+            throw new UnknownPlayersException(String.format("Weight <0 ",players));
+        }
+        if (playersEntity.getId() <= 0){
+            throw new UnknownPlayersException(String.format("ID <= 0",players));
+        }
 
         log.info("PlayersEntity: {}", playersEntity);
         try {
