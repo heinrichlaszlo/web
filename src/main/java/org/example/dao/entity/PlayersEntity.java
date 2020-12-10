@@ -16,7 +16,7 @@ import java.util.Date;
 public class PlayersEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     @Column(name = "pid")
     private int id;
 
