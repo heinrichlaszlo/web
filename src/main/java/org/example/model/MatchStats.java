@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.Column;
+
 
 @AllArgsConstructor
 @ToString

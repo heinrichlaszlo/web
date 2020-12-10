@@ -12,5 +12,5 @@ public interface TeamsDao {
 
     void updateTeams(Teams teams) throws UnknownTeamsException;
 
-    void deleteTeams(String name) throws UnknownTeamsException;
+    void deleteTeams(int id) throws UnknownTeamsException;
 }

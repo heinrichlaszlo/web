@@ -10,5 +10,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayersDeleteDto {
-    private String first_name;
+    private int id;
 }

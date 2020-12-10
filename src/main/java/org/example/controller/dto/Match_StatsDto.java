@@ -1,11 +1,18 @@
 package org.example.controller.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Match_StatsDto {
+    private String mid;
+    private int pid;
+    private int tid;
     private String loc;
     private int ki;
     private int mk;

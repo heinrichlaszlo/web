@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Collection;
 
-import java.util.Date;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -25,42 +25,84 @@ public class PlayersDaoImpl implements PlayersDao{
     private final TeamsRepository teamsRepository;
     private final Match_StatsRepository match_statsRepository;
 
+
     @Override
-    public void createPlayers(Players players){
-        PlayersEntity playersEntity = null;
+    public void createPlayers(Players players) {
+        PlayersEntity playersEntity;
+
+        //playerExist(players.getId());
 
         playersEntity = PlayersEntity.builder()
-                .dob(new Timestamp((new Date()).getTime()))
+                .id(players.getId())
+                .dob(players.getDob())
                 .first_name(players.getFirst_name())
                 .last_name(players.getLast_name())
                 .height(players.getHeight())
                 .weight(players.getWeight())
                 .build();
-        playersRepository.save(playersEntity);
+
+        log.info("PlayersEntity: {}", playersEntity);
+        try {
+            playersRepository.save(playersEntity);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+      /*  protected void playerExist(int id) throws UnknownPlayersException{
+            Optional<PlayersEntity> playersEntity = playersRepository.findById(id);
+
+            if (playersEntity.isPresent()){
+                throw new UnknownPlayersException(String.format("Found id: ",id));
+            }
+
+        }
+*/
+
+
+    @Override
+    public Collection<Players> readAll() {
+        log.info("Listing all players");
+        return StreamSupport.stream(playersRepository.findAll().spliterator(),false)
+                .map(entity -> new Players(
+                        entity.getId(),
+                        entity.getDob(),
+                        entity.getFirst_name(),
+                        entity.getLast_name(),
+                        entity.getHeight(),
+                        entity.getWeight()
+                ))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Collection<Players> readAll(){
-      return StreamSupport.stream(playersRepository.findAll().spliterator(),false)
-              .map(entity -> new Players(
+    public void updatePlayers(Players players) throws UnknownPlayersException {
+        Optional<PlayersEntity> playersEntity = playersRepository.findById(players.getId());
+        if (playersEntity.isEmpty()){
+            throw new UnknownPlayersException(String.format("Player Not Found %s",players));
+        }
+        playersEntity.get().setDob(players.getDob());
+        playersEntity.get().setFirst_name(players.getFirst_name());
+        playersEntity.get().setLast_name(players.getLast_name());
+        playersEntity.get().setHeight(players.getHeight());
+        playersEntity.get().setWeight(players.getWeight());
 
-                      entity.getFirst_name(),
-                      entity.getLast_name(),
-                      entity.getHeight(),
-                      entity.getWeight()
-              ))
-              .collect(Collectors.toList());
-  }
+        try {
+            playersRepository.save(playersEntity.get());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
 
-  @Override
-    public void deletePlayers(String first_name) throws UnknownPlayersException{
-      Optional<PlayersEntity> playersEntity = StreamSupport.stream(playersRepository.findAll().spliterator(), false).filter(
-              entity -> first_name.equals(entity.getFirst_name())
-      ).findAny();
-      if(playersEntity.isEmpty()){
-          throw new UnknownPlayersException(String.format("Player with this ID not forund",first_name));
-      }
-      playersRepository.delete(playersEntity.get());
-  }
+    @Override
+    public void deletePlayers(int id) throws UnknownPlayersException {
+        Optional<PlayersEntity> playersEntity = playersRepository.findById(id);
+        if (playersEntity.isEmpty()){
+            throw new UnknownPlayersException(String.format("Player with this ID Not Found %s",id));
+        }
+        playersRepository.delete(playersEntity.get());
+    }
+    }
 
-}
+
+
+

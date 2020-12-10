@@ -14,6 +14,7 @@ import javax.persistence.Column;
 @EqualsAndHashCode
 public class Teams {
 
+    private int id;
 
     private String name;
 

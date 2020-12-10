@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TeamsServiceImpl implements TeamsService {
 
+
     private final TeamsDao teamsDao;
 
     @Override
@@ -23,25 +24,23 @@ public class TeamsServiceImpl implements TeamsService {
     }
 
     @Override
-    public Collection<Teams> getTeamsTname(String teams) {
-        return teamsDao.readAll().stream()
-                .filter(tname -> teams.equals(tname.getName()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public void recordTeams(Teams teams) throws UnknownTeamsException {
+        if (teams.getId()<=100){
+            throw new UnknownTeamsException(String.format("Team ID is less than or equal to 100, ID: %d",teams.getId()));
+        }
         teamsDao.createTeams(teams);
     }
 
     @Override
     public void updateTeams(Teams teams) throws UnknownTeamsException {
+        if (teams.getId()<=100){
+            throw new UnknownTeamsException(String.format("Team ID is less than or equal to 100, ID: %d",teams.getId()));
+        }
         teamsDao.updateTeams(teams);
     }
 
     @Override
-    public void deleteTeams(String name) throws UnknownTeamsException {
-        teamsDao.deleteTeams(name);
+    public void deleteTeams(int id) throws UnknownTeamsException {
+        teamsDao.deleteTeams(id);
     }
 }
-

@@ -18,10 +18,21 @@ public class Match_StatsServiceImpl implements Match_StatsService {
 
     @Override
     public Collection<MatchStats> getAllMatchStats(){
+
         return match_statsDao.readAll();
     }
     @Override
     public void recordMatchStats(MatchStats matchStats) throws UnknownMatchStatsException{
         match_statsDao.createMatch_Stats(matchStats);
+    }
+
+    @Override
+    public void updateMatchStat(MatchStats matchStats) throws UnknownMatchStatsException {
+        match_statsDao.updateMatchStat(matchStats);
+    }
+
+    @Override
+    public void deleteMatchStat(String mid, int pid) throws UnknownMatchStatsException {
+        match_statsDao.deleteMatchStat(mid,pid);
     }
 }

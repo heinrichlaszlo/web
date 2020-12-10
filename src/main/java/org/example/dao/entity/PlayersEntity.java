@@ -3,6 +3,7 @@ package org.example.dao.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -20,7 +21,7 @@ public class PlayersEntity {
     private int id;
 
     @Column(name="dob")
-    private Date dob;
+    private Timestamp dob;
 
     @Column(name="first_name")
     private String first_name;

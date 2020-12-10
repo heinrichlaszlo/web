@@ -8,9 +8,9 @@ import java.util.Collection;
 public interface TeamsService {
 
     Collection<Teams> getAllTeams();
-    Collection<Teams> getTeamsTname(String tname);
+
 
     void recordTeams(Teams teams) throws UnknownTeamsException;
     void updateTeams(Teams teams) throws UnknownTeamsException;
-    void deleteTeams(String name) throws UnknownTeamsException;
+    void deleteTeams(int id) throws UnknownTeamsException;
 }

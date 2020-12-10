@@ -20,55 +20,60 @@ public class TeamsDaoImpl implements TeamsDao {
     private final TeamsRepository teamsRepository;
     private final Match_StatsRepository match_statsRepository;
 
+
     @Override
-    public void createTeams(Teams teams){
-        TeamsEntity teamsEntity = null;
-      /*  if(!teamsEntity.isPresent()){
+    public void createTeams(Teams teams) throws UnknownTeamsException {
+        TeamsEntity teamsEntity;
 
-        }
-
-       */
         teamsEntity = TeamsEntity.builder()
+                .id(teams.getId())
                 .name(teams.getName())
                 .build();
-        teamsRepository.save(teamsEntity);
-    }
 
-
-    @Override
-    public Collection<Teams> readAll() {
-        log.info("Listing all teams");
-        return StreamSupport.stream(teamsRepository.findAll().spliterator(), false)
-                .map(entity -> new Teams(entity.getName())).collect(Collectors.toList());
-    }
-
-    @Override
-    public void updateTeams(Teams teams) throws UnknownTeamsException {
-        Optional<TeamsEntity> teamsEntity = StreamSupport.stream(teamsRepository.findAll().spliterator(), false).filter(
-                entity -> entity.getName().equals(teams.getName())
-        ).findAny();
-        if (teamsEntity.isEmpty()) {
-            throw new UnknownTeamsException(String.format("Teams not found %s", teams));
-        } else {
-            teamsEntity.get().setName(teams.getName());
-        }
+        log.info("TeamsEntity: {}",teamsEntity);
         try {
-            teamsRepository.save(teamsEntity.get());
+            teamsRepository.save(teamsEntity);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
     }
 
+
     @Override
-    public void deleteTeams(String name) throws UnknownTeamsException {
-        Optional<TeamsEntity> teamsEntity = StreamSupport.stream(teamsRepository.findAll().spliterator(),false).filter(
-                entity -> name.equals(entity.getName())
-        ).findAny();
-        if(teamsEntity.isEmpty()){
-            throw new UnknownTeamsException(String.format("team with this name not foung %s",name));
+    public Collection<Teams> readAll() {
+        log.info("Listing all players");
+        return StreamSupport.stream(teamsRepository.findAll().spliterator(),false)
+                .map(entity -> new Teams(
+                        entity.getId(),
+                        entity.getName()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateTeams(Teams teams) throws UnknownTeamsException {
+        Optional<TeamsEntity> teamsEntity = teamsRepository.findById(teams.getId());
+        if (teamsEntity.isEmpty()){
+            throw new UnknownTeamsException(String.format("Team Not Found %s",teams));
+        }
+        teamsEntity.get().setName(teams.getName());
+
+        try {
+            teamsRepository.save(teamsEntity.get());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
+
+    @Override
+    public void deleteTeams(int id) throws UnknownTeamsException {
+        Optional<TeamsEntity> teamsEntity = teamsRepository.findById(id);
+        if (teamsEntity.isEmpty()){
+            throw new UnknownTeamsException(String.format("Team with this ID Not Found %s",id));
         }
         teamsRepository.delete(teamsEntity.get());
     }
-
 }
+

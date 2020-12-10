@@ -2,11 +2,11 @@ package org.example.dao.entity;
 
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+
 import java.sql.Timestamp;
 
 @Data

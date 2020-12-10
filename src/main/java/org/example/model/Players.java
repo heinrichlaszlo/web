@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -17,7 +18,8 @@ import java.util.Date;
 @EqualsAndHashCode
 public class Players {
 
-
+    private int id;
+    private Timestamp dob;
     private String first_name;
     private String last_name;
     private int height;

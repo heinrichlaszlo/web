@@ -45,7 +45,7 @@ public class TeamsController {
         return String.format("Hello %s!", name);
     }
 
-    @GetMapping("/teams")
+    @GetMapping("/teams/list1")
     public Collection<TeamsDto> listteams() {
         return service.getAllTeams()
                 .stream()
@@ -56,38 +56,47 @@ public class TeamsController {
 
     }
 
+ @GetMapping("/teams/list")
+    public Collection<TeamsDto> listTeams(){
+        return service.getAllTeams().stream()
+                .map(model -> new TeamsDto(
+                        model.getId(),
+                        model.getName()
+                ))
+                .collect(Collectors.toList());
+    }
+
     @PostMapping("/teams")
-    public void record(@RequestBody TeamsRecordRequestDto requestDto)  {
+    public void recordTeams(@RequestBody TeamsDto teamsDto){
         try {
-
-
             service.recordTeams(new Teams(
-                    requestDto.getName()
+                    teamsDto.getId(),
+                    teamsDto.getName()
             ));
-        } catch (UnknownTeamsException e){
+        } catch (UnknownTeamsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
-    @PostMapping("/teams/request")
-    public void RequestTeams(@RequestBody TeamsRequestDto requestDto){
-        try{
+    @PostMapping("/teams/update")
+    public void updateTeam(@RequestBody TeamsDto teamsDto){
+        try {
             service.updateTeams(new Teams(
-                    requestDto.getName()
+                    teamsDto.getId(),
+                    teamsDto.getName()
             ));
-        }catch (UnknownTeamsException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }catch (Exception e){
+        } catch (UnknownTeamsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
-    @DeleteMapping("/teams/delete")
-    public void deleteTeams(@RequestBody TeamsDeleteDto teamsDto){
-        try{
-            service.deleteTeams(teamsDto.getName());
 
-        }catch(UnknownTeamsException e){
+    @DeleteMapping("/teams/delete")
+    public void deleteTeams(@RequestBody TeamsDeleteDto teamsDeleteDto){
+        try {
+            service.deleteTeams(teamsDeleteDto.getId());
+        } catch (UnknownTeamsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
 }

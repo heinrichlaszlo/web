@@ -9,9 +9,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TeamsDeleteDto {
-
-
-        private String name;
-
-
+        private int id;
 }
